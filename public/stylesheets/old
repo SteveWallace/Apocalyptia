@@ -1,0 +1,184 @@
+label
+ :float left
+ :font-size 10px
+ :display block
+ :text-align right
+
+
+
+  - if (!everyauth.loggedIn)
+  h2 Welcome to Apocalyptia - Please Sing in or Register
+    <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=237795932939775&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+
+  <div class="fb-login-button" data-show-faces="true" data-width="300" data-max-rows="1"></div>
+
+  UserSchema.plugin(mongooseAuth, {
+  everymodule: {
+    everyauth: {
+      User: function() {
+        return User;
+      }
+    }
+  }
+  , facebook: {
+     everyauth: {
+        myHostname: 'http://localhost:3000'
+      , appId: '237795932939775'
+      , appSecret: 'bf5a2ec8b30fc33f21da63f794d2859a'
+      , redirectPath: '/'
+      , findOrCreateUser: function (session, accessTok, accessTokExtra, fbUser) {
+         var promise = this.Promise()
+           , User = this.User()();
+         User.findById(session.autho.userID, function (err, user) {
+          if (err) return promise.fail(err);
+          if (!user) {
+            User.where('password.login', fbUser.email).findOne( function (err, user) { 
+             if (err) return promise.fail(err);
+             if (!user) {  
+               User.createWithFB(fbUser, accessTok, accessTokExtra.expires, function(err, createdUser) {
+                if (err) return promise.fail(err);
+                return promise.fulfill(createdUser);
+               });
+             } else {
+               assignFBDataToUser(user, accessTok, accessTokExtra, fbuser);
+               user.save( function (err, user) {
+                 if (err) return promise.fail(err);
+                 promise.fulfill(user);
+               });
+             }
+         });
+        } else {
+          assignFbDataToUser(user, accessTok, accessTokExtra, fbUser);
+          user.save( function (err, user) {
+            if (err) return promise.fail(err);
+            promise.fulfill(user);
+          });
+        } 
+      });
+     }
+     return promise;
+  }
+}
+  //twitter: true
+  //password: true
+});
+
+
+var promise = this.Promise()
+           , user = this.User();
+             if (!user) {  
+               user.createWithFB(fbUser, accessToken, accessTokExtra.expires, function(err, createdUser) {
+                if (err) return promise.fail(err);
+                return promise.fulfill(createdUser);
+               });
+             } else {
+               assignFBDataToUser(user, accessToken, accessTokExtra, fbuser);
+               user.save( function (err, user) {
+                 if (err) return promise.fail(err);
+                 promise.fulfill(user);
+               });
+             }
+              return promise;
+         }
+          
+      , redirectPath: '/'
+    }
+  }
+
+
+
+
+  ////////////
+      }
+  }
+  , facebook: {
+     everyauth: {
+        myHostname: 'http://localhost:3000'
+      , appId: '237795932939775'
+      , appSecret: 'bf5a2ec8b30fc33f21da63f794d2859a'
+      , findOrCreateUser: function (session, accessToken, accessTokExtra, fbUserMetadata) {
+            console.log(util.inspect(session));
+            console.log(util.inspect(accessToken));
+            console.log(util.inspect(accessTokExtra));
+            console.log('id is ' + fbUserMetadata.id);
+            console.log('name is'+ fbUserMetadata.name);
+              var promise = new Promise();
+              var user;
+               User.findById(fbUserMetadata.id, function (err, doc) {
+                 if (err) {
+                   console.log('Issue using Facebook Connect' + err);
+                   redirect = '/error';
+                   promise.fail(err);
+                 } 
+                 if (doc) {
+                   user = doc._doc;
+                   console.log(user.username + ' already exists');
+                   redirect = ('/myAW/:' + user._id);
+                   console.log('redirect is ' + redirect);
+                   console.log('user is '+ user.username);
+                 } else {
+                        user = new User();
+                        user._id                       =   fbUserMetadata.id;
+                        user.accessToken               =   accessToken; 
+                        user.accessTokExtra            =   accessTokExtra.expires;
+                        user.username                  =   fbUserMetadata.name;
+                        user.isMC                      =   0;        
+                        user.save( function (err) {
+                         if (err) {
+                            console.log('Error Saving ' + user.username);
+                            promise.fail(err);
+                            redirect = '/error/saveError';
+                            return;
+                         }
+                        })
+                         redirect = ('/myAW/:' + user._id);
+                         console.log('Saved new user ' + user.username)
+                         
+                  }
+                  promise.fulfill(user._id);
+                });           
+               return promise;
+        }   
+      , redirectPath: redirect
+    }
+  }
+});
+
+//////////////
+
+//declare the models and instantiate
+UserSchema.plugin(mongooseAuth, {
+    everymodule: {
+      everyauth: {
+          User: function () {
+            return User;
+          }
+      }
+    }
+  , facebook: {
+      everyauth: {
+          myHostname: 'http://localhost:3000'
+        , appId: '237795932939775'
+        , appSecret: 'bf5a2ec8b30fc33f21da63f794d2859a'
+        , redirectPath: '/'
+      }
+    }
+});
+
+//////////
+
+
+var UserSchema = new Schema({
+    _id            : {type : String, default : '', required : true, index : true},
+    accessToken    : {type : String, default : '', required : true},
+    accessTokExtra : {type : Number, default : '', required : true},
+    username       : {type : String, default : '', required : true},
+    isMC           : {type: Boolean, default :  0, required : false}
+});

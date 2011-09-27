@@ -1,0 +1,46 @@
+input(class="roll-button", type="button", value="Roll!") 
+  ul.basics
+   li
+    label Armor:
+     input(type="text", name='Armor')
+   li 
+    label Wounds:
+     input(type="text", name='Wounds')
+   li 
+    label Current Experience:
+     input(type="text", name='Exp')
+ 
+  ul.stats
+   li 
+    label Cool:
+     input(type="text", name='Cool', id="coolstat")
+   li 
+    label Hard:
+     input(type="text", name='Hard')   
+   li 
+    label Hot:
+     input(type="text", name='Hot')
+   li 
+    label Sharp:
+     input(type="text", name='Sharp')
+   li 
+    label Weird:
+     input(type="text", name='Weird') 
+
+  ul.results
+   li
+     input(type="button", name="Roll", id="roll-button", value="Roll")
+    !=partial('results', { locals: { title: title } })
+
+
+         $(function() {
+      $('#roll-button').click(function() {
+       alert("stuff");
+       $.getJSON("/results", $('#form1').serialize(),
+       	success: function(response, textStatus, jqXHR){
+            $('#result').val(response);
+            console.log("Hooray, it worked!");
+            },
+       });
+              });
+              });

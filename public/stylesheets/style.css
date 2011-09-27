@@ -1,0 +1,57 @@
+body, html {
+  padding: 0;
+  margin: 0;
+  font: 20px "Lucida Grande", Helvetica, Arial, sans-serif;}
+
+a {
+  color: #000;}
+
+ul {
+  list-style-type: none;}
+
+li {
+  align: left;}
+
+#wrap {
+  width: 800px;
+  margin: 0 auto;
+  background: #000;}
+
+#cslist {
+  float: left;
+  width: 249px;
+  background: #000;
+  color: #fff;}
+
+#sheet {
+  float: right;
+  width: 550px;
+  background: #fff;
+  border-left: 1px solid;}
+
+#basics {
+  display: block;
+  float: left;
+  width: 250px;
+  padding: 2px;
+  border-bottom: 1px solid;
+  background: #fff;}
+
+#stats {
+  display: block;
+  float: right;
+  width: 250px;
+  padding: 2px;
+  background: #fff;}
+
+input[type="number"] {
+  width: 20px;
+  align: right;}
+
+#footer {
+  clear: both;
+  background: #000;}
+
+.cslink {
+  color: #fff;
+  text-decoration: none;}

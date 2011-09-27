@@ -1,0 +1,39 @@
+#sheet
+  form(name='form1', id="form1", method='post', action='/')
+   #basics
+    ul
+     li
+      label=everyauth.facebook.user.id
+     li 
+      label Name:
+       input(type="text", name='Name', id="name")
+     li 
+      label Looks:
+       input(type="text", name='Looks', id="looks")
+   #stats
+    ul
+     li 
+      label Cool:
+       input(type="number", name='Cool', id="coolstat")
+     li 
+      label Hard:
+       input(type="number", name='Hard', id="hardstat")   
+     li 
+      label Hot:
+       input(type="number", name='Hot', id="hotstat")
+     li 
+      label Sharp:
+       input(type="number", name='Sharp', id="sharpstat")
+     li 
+      label Weird:
+       input(type="number", name='Weird', id="weirdstat")
+     li
+       button(name="Roll", id="roll-button") Roll
+      li
+       button(name="GetCS", id="get-cs") Get Character
+  ul
+   li
+       button(name="Save", id="saver") Save  
+    label Results:
+     input(id='result', type="text", name='result')
+#footer
