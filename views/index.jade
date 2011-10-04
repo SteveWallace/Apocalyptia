@@ -1,25 +1,19 @@
 - if (!everyauth.loggedIn)
-   h2 Welcome to Apocalyptia - Please Sing in or 
-   a(href="/auth/facebook") login with facebook
-      | <div id="fb-root"></div>
-      | <script>(function(d, s, id) {
-      | var js, fjs = d.getElementsByTagName(s)[0];
-      | if (d.getElementById(id)) {return;}
-      | js = d.createElement(s); js.id = id;
-      | js.src = "//connect.facebook.net/en_US/all.js#appId=237795932939775&xfbml=1";
-      | fjs.parentNode.insertBefore(js, fjs);
-      | }(document, 'script', 'facebook-jssdk'));
-      | </script>
-      |<div class="fb-login-button" data-show-faces="true" data-width="300" data-max-rows="1"></div>
+  h2 Not Authenticated
+  #register
+    a(href='/register') Register
+  #password-login
+    a(href='/login', style='border: 0px') Login with Password
+  #fb-login.fb_button(style='float: left; background-position:left -188px')
+    a.fb_button_medium(href='/auth/facebook')
+      span#fb_login_text.fb_button_text
+        Connect with Facebook
 - else  
- #wrap
-  #cslist
-    ul#char-list
-     - for (var n in name)
+  #wrap
+    #cslist
+     ul#char-list
+      - for (var n in cs)
         li
-          a(href="#", class='cslink', id=name[n]._id)
-           =name[n]._id
-  !=partial('form', {locals: {title: name}})
-
-
-
+          a(href="#", class='cslink', id=cs[n]._id)
+           =cs[n].Name
+    !=partial('form')

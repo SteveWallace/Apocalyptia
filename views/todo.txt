@@ -1,0 +1,5 @@
+Write new character generator thingy
+-------rewrite dice roller to be server side
+add in local cache?
+rewrite actual site layout once backend is done
+add in pie chart wounds

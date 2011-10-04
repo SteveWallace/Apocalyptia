@@ -6,66 +6,51 @@ html
      script(type='text/javascript', src= script)
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='css/awcstheme/jquery-ui-1.8.16.custom.css')
-    script(type='text/javascript', src='js/jquery-ui-1.8.16.custom.min.js')
-
     script(type='text/javascript')
-     $(function() {
-         //save button
+     $( function() {
+
           $('#saver').click(function() {
-              alert('clickie!');
-              var urlPost = '/sheet/' + $('#name').val();
-              var dataString = $('#form1').serialize();
+              if (!$('#_id').val()) {
+                 var urlPost = '/sheet/new'; 
+              } else {
+                 var urlPost = '/sheet/' + $('#_id').val();
+              }
+              
+              var dataString = $('#Character').serialize();
+               alert(urlPost);
               $.ajax({
                   url: urlPost,
                   type: "POST",
                   data: dataString,
                   datatype: "json",
                   success: function(res) {
-                      $.ajax({
-                          url: urlget,
-                          datatype: "json",
-                          success: function(res) {
-                              $('#name').val(res._id);
-                              $('#looks').val(res.Looks);
-                              $('#coolstat').val(res.Cool);
-                              $('#hardstat').val(res.Hard);
-                              $('#sharpstat').val(res.Sharp);
-                              $('#hotstat').val(res.Hot);
-                              $('#weirdstat').val(res.Weird);
-                          }
-                      });
+                    alert('saved');
                   }
-                  //end ajax get
-                  //end ajaxpost success
+                  
               });
-              //end ajax post
             });
           //end save button
 
 
       $('#roll-button').click(function() {
-          $.ajax({
-              url: "/roll",
-              data: {'value1': $('#coolstat').val()},
-              datatype: "json", 
-              success: function(res) {
-              $('#result').val(res);
-              console.log("Hooray, it worked!");
-       }
-        });
+           arg = 100;
+           total = 0;
+           total = (Math.floor((Math.random()*6)+1) + Math.floor((Math.random()*6)+1)) + Number(arg);
+            $('#result').val(total);
+            console.log("Hooray, it worked!");
         });
 
-      $('a.cslink').click(function() {
+       $('a.cslink').click(function() {
           //when clicked check to see if there is a character, if so save it and then pull the one chosen.
           var urlget = '/sheet/' + $(this).attr('id');
-          if ($('#name').val() === '') {
+          if (!$('#_id').val()) {
               //if there isn't a character on display, just grab the one they want
-              var urlget = '/sheet/' + $(this).attr('id');
               $.ajax({
               url: urlget,
                 datatype: "json",
                 success: function(res) {
-                    $('#name').val(res._id);
+                    $('#_id').val(res._id);
+                    $('#name').val(res.Name);
                     $('#looks').val(res.Looks);
                     $('#coolstat').val(res.Cool);
                     $('#hardstat').val(res.Hard);
@@ -76,8 +61,8 @@ html
               });
           } else {
               //if there is a character, save it and then grab the next
-              var urlPost = '/sheet/' + $('#name').val();
-              var dataString = $('#form1').serialize();
+              var urlPost = '/sheet/' + $('#_id').val();
+              var dataString = $('#Character').serialize();
               $.ajax({
                   url: urlPost,
                   type: "POST",
@@ -86,9 +71,11 @@ html
                   success: function(res) {
                       $.ajax({
                           url: urlget,
+                          type: "GET",
                           datatype: "json",
                           success: function(res) {
-                              $('#name').val(res._id);
+                              $('#_id').val(res._id);
+                              $('#name').val(res.Name);
                               $('#looks').val(res.Looks);
                               $('#coolstat').val(res.Cool);
                               $('#hardstat').val(res.Hard);
@@ -105,6 +92,6 @@ html
           }
          
 
-      });
+       });
       });
  body!= body

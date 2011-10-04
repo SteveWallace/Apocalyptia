@@ -1,9 +1,9 @@
 #sheet
-  form(name='form1', id="form1", method='post', action='/')
+  form(name='Character', id="Character")
    #basics
     ul
      li
-      label=everyauth.facebook.user.id
+       input(type="hidden", id="_id")
      li 
       label Name:
        input(type="text", name='Name', id="name")
@@ -28,12 +28,13 @@
       label Weird:
        input(type="number", name='Weird', id="weirdstat")
      li
-       button(name="Roll", id="roll-button") Roll
-      li
        button(name="GetCS", id="get-cs") Get Character
   ul
    li
        button(name="Save", id="saver") Save  
-    label Results:
+  ul
+   li
+      button(name="Roller", id="roll-button") Roll
+  label Results:
      input(id='result', type="text", name='result')
 #footer
