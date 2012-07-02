@@ -1,3 +1,1 @@
-Apocalyptia Readme and shit. Working files for charactersheet generator and storage.
-
--steve
+Apocalyptia is the start of an Apocalypse World character generator and online game keeper based on Node. This was basically a way to learn node so it's not the cleanest or best implementation. Feel free to do whatever you like with the code it's all released under an MIT license.
